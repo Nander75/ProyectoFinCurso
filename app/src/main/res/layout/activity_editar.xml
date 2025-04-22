@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del producto"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etMarca"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Marca"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/etNombre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/etTalla"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Talla (número o letra)"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/etMarca"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/etCantidad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Cantidad"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/etTalla"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/etPrecio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Precio"
+            android:inputType="numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/etCantidad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/btnSeleccionarImagen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Imagen"
+            app:layout_constraintTop_toBottomOf="@id/etPrecio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <ImageView
+            android:id="@+id/ivImagenSeleccionada"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            android:background="#DDDDDD"
+            app:layout_constraintTop_toBottomOf="@id/btnSeleccionarImagen"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btnActualizar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Actualizar"
+            android:backgroundTint="#2196F3"
+            app:layout_constraintTop_toBottomOf="@id/ivImagenSeleccionada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp" />
+
+        <Button
+            android:id="@+id/btnSalir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Volver sin guardar"
+            android:backgroundTint="#9E9E9E"
+            app:layout_constraintTop_toBottomOf="@id/btnActualizar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
