@@ -17,6 +17,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Botón de ver todos -->
+    <Button
+        android:id="@+id/btnVerTodos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Ver todos"
+        app:layout_constraintBottom_toTopOf="@id/btnSalir"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="80dp"/>
+
+    <!-- Botón de escanear -->
+    <Button
+        android:id="@+id/btnEscanearQR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Escanear QR"
+        app:layout_constraintBottom_toTopOf="@id/btnSalir"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+
     <!-- Botón de salir -->
     <Button
         android:id="@+id/btnSalir"

@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
@@ -24,14 +26,14 @@ public class Ver extends AppCompatActivity {
     private ProductoAdapter adapter;
     private ArrayList<Producto> listaProductos;
     private DatabaseReference productosRef;
-    private Button btnSalir;
+    private Button btnSalir, btnEscanearQR, btnVerTodos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver);
 
-        // Inicializar componentes de la interfaz
+        // Inicializar vistas
         recyclerProductos = findViewById(R.id.recyclerProductos);
         recyclerProductos.setLayoutManager(new LinearLayoutManager(this));
 
@@ -39,18 +41,70 @@ public class Ver extends AppCompatActivity {
         adapter = new ProductoAdapter(this, listaProductos);
         recyclerProductos.setAdapter(adapter);
 
-        // Obtener referencia a la base de datos
+        // Firebase reference
         productosRef = FirebaseDatabase.getInstance().getReference("producto");
 
-        // Cargar los productos
-        cargarProductos();
+        // Botones
+        btnSalir = findViewById(R.id.btnSalir);
+        btnEscanearQR = findViewById(R.id.btnEscanearQR);
+        btnVerTodos = findViewById(R.id.btnVerTodos);
 
-        // Configurar el botón "Salir"
-        btnSalir = findViewById(R.id.btnSalir); // Obtener el botón
+        // Botón Salir
         btnSalir.setOnClickListener(v -> {
-            // Redirigir al menú cuando el botón sea presionado
             startActivity(new Intent(Ver.this, Menu.class));
-            finish(); // Terminar la actividad actual
+            finish();
+        });
+
+        // Botón Escanear QR
+        btnEscanearQR.setOnClickListener(v -> {
+            IntentIntegrator integrator = new IntentIntegrator(Ver.this);
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+            integrator.setPrompt("Escanea el código QR del producto");
+            integrator.setCameraId(0);
+            integrator.setBeepEnabled(true);
+            integrator.setBarcodeImageEnabled(true);
+            integrator.initiateScan();
+        });
+
+        // Botón Ver todos
+        btnVerTodos.setOnClickListener(v -> cargarProductos());
+
+        // Cargar todos los productos al inicio
+        cargarProductos();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_SHORT).show();
+            } else {
+                buscarProductoPorId(result.getContents());
+            }
+        }
+    }
+
+    private void buscarProductoPorId(String idEscaneado) {
+        productosRef.child(idEscaneado).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Producto producto = snapshot.getValue(Producto.class);
+                if (producto != null) {
+                    listaProductos.clear();
+                    listaProductos.add(producto);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(Ver.this, "Producto encontrado: " + producto.getNombre(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Ver.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Ver.this, "Error al buscar producto", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
