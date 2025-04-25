@@ -63,6 +63,7 @@ public class Ver extends AppCompatActivity {
             integrator.setCameraId(0);
             integrator.setBeepEnabled(true);
             integrator.setBarcodeImageEnabled(true);
+            integrator.setCaptureActivity(CaptureActivityPortrait.class);
             integrator.initiateScan();
         });
 

@@ -29,6 +29,10 @@
         <activity android:name=".Menu" />
         <activity android:name=".Ver" />
         <activity android:name=".Editar" />
+        <activity
+            android:name=".CaptureActivityPortrait"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     </application>
 

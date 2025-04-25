@@ -34,7 +34,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.Produc
         Producto producto = listaProductos.get(position);
         holder.tvNombre.setText(producto.getNombre());
         holder.tvCantidad.setText("Cantidad: " + producto.getCantidad());
-        holder.tvPrecio.setText("Precio: €" + producto.getPrecio());
+        holder.tvPrecio.setText("Precio: " + producto.getPrecio() + "€");
 
         // Abrir la actividad Editar con los datos del producto
         holder.itemView.setOnClickListener(v -> {

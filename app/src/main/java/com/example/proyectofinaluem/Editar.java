@@ -17,7 +17,7 @@ public class Editar extends AppCompatActivity {
 
     private EditText etNombre, etMarca, etTalla, etCantidad, etPrecio;
     private ImageView ivImagenSeleccionada;
-    private Button btnActualizar, btnSalir;
+    private Button btnActualizar, btnEliminar, btnSalir;
 
     private DatabaseReference productosRef;
     private Producto productoActual;
@@ -37,6 +37,7 @@ public class Editar extends AppCompatActivity {
         etPrecio = findViewById(R.id.etPrecio);
         ivImagenSeleccionada = findViewById(R.id.ivImagenSeleccionada);
         btnActualizar = findViewById(R.id.btnActualizar);
+        btnEliminar = findViewById(R.id.btnEliminar);
         btnSalir = findViewById(R.id.btnSalir);
 
         // Obtener producto desde intent
@@ -49,7 +50,10 @@ public class Editar extends AppCompatActivity {
         // Botón actualizar
         btnActualizar.setOnClickListener(v -> actualizarProducto());
 
-        // Botón volver sin guardar
+        // Botón eliminar
+        btnEliminar.setOnClickListener(v -> eliminarProducto());
+
+        // Botón salir
         btnSalir.setOnClickListener(v -> finish());
     }
 
@@ -59,7 +63,7 @@ public class Editar extends AppCompatActivity {
         etTalla.setText(producto.getTalla());
         etCantidad.setText(String.valueOf(producto.getCantidad()));
         etPrecio.setText(String.valueOf(producto.getPrecio()));
-        // Si tienes una imagen real, aquí podrías cargarla usando Glide o Picasso
+        // Aquí podrías cargar la imagen si estuviera disponible
     }
 
     private void actualizarProducto() {
@@ -92,14 +96,21 @@ public class Editar extends AppCompatActivity {
         productoActual.setCantidad(cantidad);
         productoActual.setPrecio(precio);
 
-        // Subir cambios a Firebase
+        // Subir a Firebase
         productosRef.child(productoActual.getId()).setValue(productoActual)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Producto actualizado", Toast.LENGTH_SHORT).show();
-                    finish(); // Vuelve al listado
+                    finish();
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+                .addOnFailureListener(e -> Toast.makeText(this, "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private void eliminarProducto() {
+        productosRef.child(productoActual.getId()).removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Producto eliminado", Toast.LENGTH_SHORT).show();
+                    finish(); // Volver al listado
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Error al eliminar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
