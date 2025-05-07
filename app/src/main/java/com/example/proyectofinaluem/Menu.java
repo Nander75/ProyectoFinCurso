@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Menu extends AppCompatActivity {
 
-    private Button btnRegistrar, btnVer, btnSalir;
+    private Button btnRegistrar, btnVer, btnSalir, btnInventario;
     private FirebaseAuth mAuth;
 
     @Override
@@ -24,6 +24,7 @@ public class Menu extends AppCompatActivity {
         btnRegistrar = findViewById(R.id.btnRegistrar);
         btnVer = findViewById(R.id.btnVer);
         btnSalir = findViewById(R.id.btnSalir);
+        btnInventario = findViewById(R.id.btnInventario); // Nuevo botón para abrir inventario
 
         // Listeners
         btnRegistrar.setOnClickListener(v ->
@@ -39,5 +40,10 @@ public class Menu extends AppCompatActivity {
             startActivity(new Intent(Menu.this, MainActivity.class));
             finish();
         });
+
+        // Listener para el nuevo botón "Inventario"
+        btnInventario.setOnClickListener(v ->
+                startActivity(new Intent(Menu.this, InventarioActivity.class))
+        );
     }
 }

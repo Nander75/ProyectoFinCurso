@@ -1,0 +1,51 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo degradado suave -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/background_light"
+                android:endColor="#C6DBFF"
+                android:angle="270"/>
+        </shape>
+    </item>
+
+    <!-- Anillo decorativo (esquina superior izquierda) -->
+    <item>
+        <bitmap
+            android:src="@drawable/anillo"
+            android:gravity="top|start"
+            android:tileMode="disabled"
+            android:antialias="true"
+            android:scaleType="fitXY" />
+    </item>
+
+    <!-- Anillo decorativo (esquina inferior derecha) -->
+    <item>
+        <bitmap
+            android:src="@drawable/anillo"
+            android:gravity="bottom|end"
+            android:tileMode="disabled"
+            android:antialias="true"
+            android:scaleType="fitXY" />
+    </item>
+
+    <!-- Logo de la cabeza de Sonic (esquina superior derecha) -->
+    <item>
+        <bitmap
+            android:src="@drawable/sonic_logo"
+            android:gravity="top|end"
+            android:tileMode="disabled"
+            android:antialias="true"
+            android:scaleType="fitXY" />
+    </item>
+
+    <!-- Logo de la cabeza de Sonic (esquina inferior izquierda) -->
+    <item>
+        <bitmap
+            android:src="@drawable/sonic_logo"
+            android:gravity="bottom|start"
+            android:tileMode="disabled"
+            android:antialias="true"
+            android:scaleType="fitXY" />
+    </item>
+</layer-list>

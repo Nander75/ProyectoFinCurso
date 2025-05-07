@@ -3,100 +3,143 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    android:background="@color/background_light"
+    android:padding="24dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrar Producto"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/sonic_blue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Nombre -->
         <EditText
             android:id="@+id/etNombre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Nombre del producto"
             android:inputType="textPersonName"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/edit_text_background"
+            android:padding="14dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTitulo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Marca -->
         <EditText
             android:id="@+id/etMarca"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Marca"
             android:inputType="text"
+            android:background="@drawable/edit_text_background"
+            android:padding="14dp"
             app:layout_constraintTop_toBottomOf="@id/etNombre"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="12dp" />
 
+        <!-- Talla -->
         <EditText
             android:id="@+id/etTalla"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Talla (número o letra)"
             android:inputType="text"
+            android:background="@drawable/edit_text_background"
+            android:padding="14dp"
             app:layout_constraintTop_toBottomOf="@id/etMarca"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="12dp" />
 
+        <!-- Cantidad -->
         <EditText
             android:id="@+id/etCantidad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Cantidad"
             android:inputType="number"
+            android:background="@drawable/edit_text_background"
+            android:padding="14dp"
             app:layout_constraintTop_toBottomOf="@id/etTalla"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="12dp" />
 
+        <!-- Precio -->
         <EditText
             android:id="@+id/etPrecio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Precio"
             android:inputType="numberDecimal"
+            android:background="@drawable/edit_text_background"
+            android:padding="14dp"
             app:layout_constraintTop_toBottomOf="@id/etCantidad"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="12dp" />
 
+        <!-- Seleccionar Imagen -->
         <Button
             android:id="@+id/btnSeleccionarImagen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Seleccionar Imagen"
+            android:background="@drawable/button_background"
             app:layout_constraintTop_toBottomOf="@id/etPrecio"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp" />
 
+        <!-- Imagen seleccionada -->
         <ImageView
             android:id="@+id/ivImagenSeleccionada"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="12dp"
             android:scaleType="centerCrop"
-            android:background="#DDDDDD"
             app:layout_constraintTop_toBottomOf="@id/btnSeleccionarImagen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Barra de progreso -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/ivImagenSeleccionada"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Confirmar -->
         <Button
             android:id="@+id/btnConfirmar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Confirmar"
-            android:backgroundTint="#4CAF50"
-            app:layout_constraintTop_toBottomOf="@id/ivImagenSeleccionada"
+            android:background="@drawable/button_background"
+            app:layout_constraintTop_toBottomOf="@id/progressBar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="24dp" />
 
+        <!-- Volver -->
         <Button
             android:id="@+id/btnVolver"
             android:layout_width="0dp"

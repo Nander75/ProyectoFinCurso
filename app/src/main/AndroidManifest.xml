@@ -1,6 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permiso para usar la cámara -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- Permisos necesarios para abrir la galería -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Para Android 13+ -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +37,7 @@
         <activity android:name=".Menu" />
         <activity android:name=".Ver" />
         <activity android:name=".Editar" />
+        <activity android:name=".InventarioActivity"/>
         <activity
             android:name=".CaptureActivityPortrait"
             android:screenOrientation="portrait"

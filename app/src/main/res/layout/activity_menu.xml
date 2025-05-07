@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/background_light">
 
+    <!-- Título del menú -->
+    <TextView
+        android:id="@+id/tvTituloMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menú Principal"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/sonic_blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <!-- Botón Registrar -->
     <Button
         android:id="@+id/btnRegistrar"
         android:layout_width="0dp"
@@ -12,17 +28,15 @@
         android:text="Registrar"
         android:textSize="18sp"
         android:padding="16dp"
-        android:backgroundTint="#4CAF50"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnVer"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloMenu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_bias="0.5"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />
 
+    <!-- Botón Ver -->
     <Button
         android:id="@+id/btnVer"
         android:layout_width="0dp"
@@ -30,15 +44,31 @@
         android:text="Ver"
         android:textSize="18sp"
         android:padding="16dp"
-        android:backgroundTint="#2196F3"
+        android:background="@drawable/button_background"
         app:layout_constraintTop_toBottomOf="@id/btnRegistrar"
-        app:layout_constraintBottom_toTopOf="@id/btnSalir"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />
 
+    <!-- Botón Inventario -->
+    <Button
+        android:id="@+id/btnInventario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Inventario"
+        android:textSize="18sp"
+        android:padding="16dp"
+        android:background="@drawable/button_background"
+        app:layout_constraintTop_toBottomOf="@id/btnVer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
+
+    <!-- Botón Salir (diferente color) -->
     <Button
         android:id="@+id/btnSalir"
         android:layout_width="0dp"
@@ -47,11 +77,23 @@
         android:textSize="18sp"
         android:padding="16dp"
         android:backgroundTint="#F44336"
-        app:layout_constraintTop_toBottomOf="@id/btnVer"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnInventario"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp" />
+
+    <!-- Sonic haciendo "Ok" en la esquina inferior derecha -->
+    <ImageView
+        android:id="@+id/ivSonicOk"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/sonic_ok"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

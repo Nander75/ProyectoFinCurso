@@ -1,12 +1,16 @@
 package com.example.proyectofinaluem;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Ver extends AppCompatActivity {
@@ -26,14 +31,13 @@ public class Ver extends AppCompatActivity {
     private ProductoAdapter adapter;
     private ArrayList<Producto> listaProductos;
     private DatabaseReference productosRef;
-    private Button btnSalir, btnEscanearQR, btnVerTodos;
+    private Button btnSalir, btnEscanearQR, btnUsarImagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver);
 
-        // Inicializar vistas
         recyclerProductos = findViewById(R.id.recyclerProductos);
         recyclerProductos.setLayoutManager(new LinearLayoutManager(this));
 
@@ -41,21 +45,17 @@ public class Ver extends AppCompatActivity {
         adapter = new ProductoAdapter(this, listaProductos);
         recyclerProductos.setAdapter(adapter);
 
-        // Firebase reference
         productosRef = FirebaseDatabase.getInstance().getReference("producto");
 
-        // Botones
         btnSalir = findViewById(R.id.btnSalir);
         btnEscanearQR = findViewById(R.id.btnEscanearQR);
-        btnVerTodos = findViewById(R.id.btnVerTodos);
+        btnUsarImagen = findViewById(R.id.btnUsarImagen);
 
-        // Botón Salir
         btnSalir.setOnClickListener(v -> {
             startActivity(new Intent(Ver.this, Menu.class));
             finish();
         });
 
-        // Botón Escanear QR
         btnEscanearQR.setOnClickListener(v -> {
             IntentIntegrator integrator = new IntentIntegrator(Ver.this);
             integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
@@ -67,50 +67,52 @@ public class Ver extends AppCompatActivity {
             integrator.initiateScan();
         });
 
-        // Botón Ver todos
-        btnVerTodos.setOnClickListener(v -> cargarProductos());
+        btnUsarImagen.setOnClickListener(v -> tomarFoto());
 
         // Cargar todos los productos al inicio
-        cargarProductos();
+        cargarProductos(null);
+    }
+
+    private void tomarFoto() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 102);
+        } else {
+            abrirCamara();
+        }
+    }
+
+    private void abrirCamara() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 101);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_SHORT).show();
-            } else {
-                buscarProductoPorId(result.getContents());
+
+        if (requestCode == 101 && resultCode == RESULT_OK && data != null) {
+            Bitmap foto = (Bitmap) data.getExtras().get("data");
+
+            try {
+                ImageClassifier classifier = new ImageClassifier(this);
+                String nombreDetectado = classifier.classify(foto);
+
+                if (nombreDetectado != null) {
+                    Toast.makeText(this, "Producto detectado: " + nombreDetectado, Toast.LENGTH_SHORT).show();
+                    cargarProductos(nombreDetectado); // ahora se resalta en vez de mostrar solo ese
+                } else {
+                    Toast.makeText(this, "No se pudo identificar el producto (confianza baja)", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error al cargar el modelo de IA", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void buscarProductoPorId(String idEscaneado) {
-        productosRef.child(idEscaneado).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Producto producto = snapshot.getValue(Producto.class);
-                if (producto != null) {
-                    listaProductos.clear();
-                    listaProductos.add(producto);
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(Ver.this, "Producto encontrado: " + producto.getNombre(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Ver.this, "Producto no encontrado", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Ver.this, "Error al buscar producto", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void cargarProductos() {
-        productosRef.addValueEventListener(new ValueEventListener() {
+    private void cargarProductos(String nombreAResaltar) {
+        productosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listaProductos.clear();
@@ -119,6 +121,18 @@ public class Ver extends AppCompatActivity {
                     listaProductos.add(producto);
                 }
                 adapter.notifyDataSetChanged();
+
+                if (nombreAResaltar != null) {
+                    for (int i = 0; i < listaProductos.size(); i++) {
+                        if (listaProductos.get(i).getNombre().equalsIgnoreCase(nombreAResaltar)) {
+                            adapter.resaltarProducto(nombreAResaltar);
+                            recyclerProductos.scrollToPosition(i);
+                            break;
+                        }
+                    }
+                } else {
+                    adapter.resaltarProducto(null); // elimina resaltado
+                }
             }
 
             @Override
